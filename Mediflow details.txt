@@ -1,0 +1,255 @@
+PROJECT NAME: MediFlow
+
+HACKATHON:
+Queue Cure '26
+
+PROBLEM STATEMENT:
+76% of India's clinics still use paper token systems. Patients have no visibility into wait times. Receptionists manage queues manually. Build a real-time clinic queue management system.
+
+PROJECT GOAL:
+A web application where:
+
+* Receptionist can add patients and manage queue.
+* Patients can see current token, tokens ahead, and estimated wait time.
+* Doctors can view queue analytics.
+* All screens update instantly when "Call Next" is clicked.
+
+TECH STACK:
+
+Frontend:
+
+* React (Vite)
+* React Router DOM
+* Axios
+* Socket.IO Client
+* CSS/Tailwind (to decide later)
+
+Backend:
+
+* Node.js
+* Express.js
+* Socket.IO
+* Mongoose
+
+Database:
+
+* MongoDB Atlas
+
+Deployment:
+
+* Frontend: Vercel
+* Backend: Render
+* Database: MongoDB Atlas
+
+PROJECT STRUCTURE:
+
+Frontend Pages:
+
+1. Landing Page
+   Purpose:
+   Role selection page.
+
+Options:
+
+* Receptionist
+* Doctor
+* Patient
+
+2. Receptionist Dashboard
+   Features:
+
+* Add Patient
+* Auto Generate Token
+* Queue List
+* Call Next Token
+* Set Average Consultation Time
+* Emergency Priority Patient (bonus)
+
+3. Patient Tracking Page
+   Features:
+
+* Current Token Being Served
+* Tokens Ahead
+* Estimated Wait Time
+* Live Queue Updates
+
+4. Doctor Dashboard
+   Features:
+
+* Patients Served Today
+* Current Queue Length
+* Average Consultation Time
+* Analytics Cards
+
+5. Unauthorized Page
+   Shows access denied if wrong role tries to access a dashboard.
+
+AUTHENTICATION PLAN:
+
+Receptionist:
+
+* Email
+* Password
+* Role = receptionist
+
+Doctor:
+
+* Email
+* Password
+* Role = doctor
+
+Patient:
+
+* No login required
+* Track using Token Number
+  OR
+* QR Code generated at registration
+
+ROLE-BASED ACCESS CONTROL:
+
+Doctor Dashboard:
+Only role = doctor
+
+Reception Dashboard:
+Only role = receptionist
+
+If role mismatch:
+Show "Access Denied"
+
+DATABASE DESIGN:
+
+Users Collection:
+
+{
+name,
+email,
+password,
+role
+}
+
+Patients Collection:
+
+{
+tokenNumber,
+patientName,
+phoneNumber,
+status
+}
+
+Status values:
+
+* waiting
+* serving
+* completed
+
+Settings Collection:
+
+{
+avgConsultationTime
+}
+
+TOKEN LOGIC:
+
+When patient added:
+
+Rahul -> Token 101
+Priya -> Token 102
+Amit -> Token 103
+
+Auto increment token numbers.
+
+WAIT TIME FORMULA:
+
+Estimated Wait =
+(tokens ahead) × (average consultation time)
+
+Example:
+
+Current Token = 101
+Patient Token = 104
+Average Time = 10 min
+
+Tokens Ahead = 3
+
+Estimated Wait = 30 minutes
+
+REAL-TIME FEATURE:
+
+Technology:
+Socket.IO
+
+Flow:
+
+Receptionist clicks:
+"Call Next"
+
+Backend emits:
+queueUpdated
+
+Patient page updates instantly.
+
+Doctor dashboard updates instantly.
+
+No page refresh.
+
+BUILD ORDER:
+
+Phase 1:
+
+* Setup React
+* Setup Backend
+* Setup Routing
+
+Phase 2:
+
+* Landing Page UI
+
+Phase 3:
+
+* Receptionist Dashboard UI
+
+Phase 4:
+
+* Backend APIs
+  POST /addPatient
+  GET /patients
+  PUT /callNext
+
+Phase 5:
+
+* MongoDB Integration
+
+Phase 6:
+
+* Patient Tracking Page
+
+Phase 7:
+
+* Doctor Dashboard
+
+Phase 8:
+
+* Socket.IO Real-Time Updates
+
+Phase 9:
+
+* Authentication and Roles
+
+BONUS FEATURES:
+
+1. Emergency Patient Priority
+2. QR Code Token Tracking
+3. Dark Mode
+4. Analytics Charts
+
+CURRENT STATUS:
+
+* Node.js installed successfully.
+* React project started using Vite.
+* We decided to build using VS Code instead of Antigravity.
+* Need to ensure project is created inside:
+  C:\Users\RAJU\Desktop\MediFlow
+  and not inside system32.
+
+NEXT STEP WHEN CONTINUING:
+Verify project location, start React app correctly, then build the professional Landing Page UI for MediFlow.
