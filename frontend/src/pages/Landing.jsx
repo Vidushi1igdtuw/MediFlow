@@ -11,8 +11,7 @@ export default function Landing() {
           <div className="logo-icon">✚</div>
 
           <div>
-            <h2>MediFlow</h2>
-            <p>Smart Queue Management</p>
+            <h2>Medi<span>Flow</span></h2>
           </div>
         </div>
 
@@ -38,14 +37,14 @@ export default function Landing() {
 
           <div className="live-badge">
             <span className="live-dot"></span>
-            Real-time Queue Management
+            Smart Queue, Better Care.
           </div>
 
           <h1>
             Smarter Queues
             <br />
-            for Better
-            <span> Healthcare</span>
+            for <span>Better
+             Healthcare</span>
           </h1>
 
           <p className="hero-description">
