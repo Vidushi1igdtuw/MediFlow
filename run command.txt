@@ -1,0 +1,4 @@
+cd %USERPROFILE%\Desktop\MediFlow\frontend
+npm run dev
+
+recept access code: RCP-2026-MEDI

@@ -1,6 +1,19 @@
+import {
+  Activity,
+  BarChart3,
+  ShieldCheck
+} from "lucide-react";
 import "./Landing.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
+  const navigate = useNavigate();
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="landing-page">
 
@@ -16,15 +29,35 @@ export default function Landing() {
         </div>
 
         <div className="nav-links">
-          <a href="/">Features</a>
-          <a href="/">Solutions</a>
-          <a href="/">Pricing</a>
-          <a href="/">Contact</a>
-        </div>
+  <a href="/">Live Update</a>
 
-        <button className="nav-btn">
-          Get Started
-        </button>
+  <a
+    href="#roles"
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToSection("roles");
+    }}
+  >
+    Roles
+  </a>
+
+  <a
+    href="#features"
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToSection("features");
+    }}
+  >
+    Features
+  </a>
+</div>
+
+        <button
+  className="nav-btn"
+  onClick={() => scrollToSection("roles")}
+>
+  Get Started
+</button>
       </nav>
 
       {/* ================= HERO SECTION ================= */}
@@ -53,33 +86,48 @@ export default function Landing() {
             operations.
           </p>
 
-          <div className="hero-buttons">
-
-            <button className="primary-btn">
-              Launch Dashboard
-            </button>
-
-            <button className="secondary-btn">
-              Watch Demo
-            </button>
-
-          </div>
-
           {/* FEATURES */}
 
           <div className="quick-features">
 
             <div className="feature-pill">
-              ⚡ Real-time Updates
-            </div>
 
-            <div className="feature-pill">
-              📊 Smart Analytics
-            </div>
+  <div className="icon-circle cyan">
+    <Activity size={20} />
+  </div>
 
-            <div className="feature-pill">
-              🛡 Secure & Reliable
-            </div>
+  <div>
+    <h4>Real-time Updates</h4>
+    <p>Instant Queue Sync</p>
+  </div>
+
+</div>
+
+<div className="feature-pill">
+
+  <div className="icon-circle purple">
+    <BarChart3 size={20} />
+  </div>
+
+  <div>
+    <h4>Smart Analytics</h4>
+    <p>Clinic Insights</p>
+  </div>
+
+</div>
+
+<div className="feature-pill">
+
+  <div className="icon-circle blue">
+    <ShieldCheck size={20} />
+  </div>
+
+  <div>
+    <h4>Secure Access</h4>
+    <p>Role Based Control</p>
+  </div>
+
+</div>
 
           </div>
 
@@ -192,14 +240,14 @@ export default function Landing() {
 
       {/* ================= ROLE SECTION ================= */}
 
-      <section className="roles-section">
+      <section id="roles" className="roles-section">
 
         <div className="section-title">
           <h2>Choose Your Role</h2>
 
           <p>
             Access personalized dashboards designed
-            for your healthcare workflow.
+            for your healthcare workflow <b>(SCROLL ↓)</b>
           </p>
         </div>
 
@@ -210,7 +258,7 @@ export default function Landing() {
           <div className="role-card receptionist-card">
 
             <div className="card-image">
-              IMAGE HERE
+              <img src="/receptionist.png" alt="Receptionist"/>
             </div>
 
             <div className="card-content">
@@ -222,9 +270,11 @@ export default function Landing() {
                 and control patient queues effortlessly.
               </p>
 
-              <button>
-                Enter Dashboard →
-              </button>
+              <button
+  onClick={() => navigate("/receptionist-login")}
+>
+  Login/Signup →
+</button>
 
             </div>
 
@@ -235,7 +285,7 @@ export default function Landing() {
           <div className="role-card doctor-card">
 
             <div className="card-image">
-              IMAGE HERE
+              <img src="/doctor.png" alt="Doctor"/>
             </div>
 
             <div className="card-content">
@@ -248,7 +298,7 @@ export default function Landing() {
               </p>
 
               <button>
-                Enter Dashboard →
+                Login/Signup →
               </button>
 
             </div>
@@ -260,7 +310,7 @@ export default function Landing() {
           <div className="role-card patient-card">
 
             <div className="card-image">
-              IMAGE HERE
+              <img src="/patient.png" alt="Patient"/>
             </div>
 
             <div className="card-content">
@@ -273,7 +323,7 @@ export default function Landing() {
               </p>
 
               <button>
-                Track Token →
+                Login/Singup →
               </button>
 
             </div>
@@ -286,14 +336,12 @@ export default function Landing() {
 
       {/* ================= FEATURES ================= */}
 
-      <section className="why-section">
+      <section id="features" className="why-section">
 
         <div className="section-title">
           <h2>Why Clinics Choose MediFlow</h2>
 
-          <p>
-            Built specifically for modern healthcare facilities.
-          </p>
+          
         </div>
 
         <div className="feature-grid">
@@ -340,9 +388,9 @@ export default function Landing() {
           Better Tomorrow.
         </h2>
 
-        <button>
-          Get Started Today
-        </button>
+        <button onClick={() => scrollToSection("roles")}>
+  Get Started Today
+</button>
 
       </section>
 
