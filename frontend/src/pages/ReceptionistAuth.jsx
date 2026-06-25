@@ -19,7 +19,7 @@ export default function ReceptionistAuth() {
 
     alert("Login Successful");
 
-    navigate("/receptionist-dashboard");
+    navigate("/receptionist/dashboard");
   };
 
   return (

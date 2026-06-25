@@ -1,0 +1,465 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* =====================================
+   BACKGROUND
+===================================== */
+
+.queue-container{
+    min-height:100vh;
+    width:100%;
+
+    background-image:url("../public/mediflow_bg.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:repeat;
+
+    position:relative;
+}
+
+.queue-container::before{
+    content:"";
+    position:absolute;
+    top:-200px;
+    right:-200px;
+
+    width:600px;
+    height:600px;
+
+    background:radial-gradient(
+        circle,
+        rgba(0,255,255,.10),
+        transparent 70%
+    );
+
+    filter:blur(90px);
+    pointer-events:none;
+}
+
+.queue-container::after{
+    content:"";
+    position:absolute;
+    bottom:-250px;
+    left:-200px;
+
+    width:600px;
+    height:600px;
+
+    background:radial-gradient(
+        circle,
+        rgba(168,85,247,.12),
+        transparent 70%
+    );
+
+    filter:blur(100px);
+    pointer-events:none;
+}
+
+/* =====================================
+   NAVBAR
+===================================== */
+
+.rd-navbar{
+    width:100%;
+    height:65px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 7%;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    backdrop-filter:blur(22px);
+    background:rgba(5,8,22,.55);
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+        135deg,
+        #22d3ee,
+        #8b5cf6
+    );
+
+    font-size:18px;
+    font-weight:800;
+    color:white;
+}
+
+.logo-section h2{
+    color:white;
+    font-size:22px;
+    font-weight:800;
+}
+
+.logo-section h2 span{
+    color:#22d3ee;
+}
+
+.rd-hospital{
+    color:#dbe4ff;
+    font-size:15px;
+}
+
+.rd-right{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.rd-time{
+    color:#dbe4ff;
+}
+
+.rd-profile{
+    padding:8px 14px;
+    border-radius:999px;
+
+    background:rgba(34,211,238,.10);
+    border:1px solid rgba(34,211,238,.25);
+
+    color:#67e8f9;
+}
+
+.rd-logout{
+    border:none;
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+        135deg,
+        #22d3ee,
+        #3b82f6
+    );
+
+    color:black;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =====================================
+   BODY
+===================================== */
+
+.queue-body{
+    display:flex;
+    min-height:calc(100vh - 65px);
+}
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.rd-sidebar{
+    width:260px;
+
+    padding:20px;
+
+    background:rgba(13,18,35,.55);
+
+    border-right:1px solid rgba(255,255,255,.06);
+
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.rd-sidebar button{
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#dbe4ff;
+
+    padding:12px 14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.25s;
+}
+
+.rd-sidebar button:hover{
+    background:rgba(34,211,238,.10);
+
+    border-color:rgba(34,211,238,.35);
+
+    color:#22d3ee;
+}
+
+.active-btn{
+    background:rgba(34,211,238,.10) !important;
+    color:#22d3ee !important;
+    border-color:rgba(34,211,238,.35) !important;
+}
+
+.sidebar-box{
+    margin-top:15px;
+
+    padding:14px;
+
+    background:rgba(13,18,35,.45);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:16px;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.sidebar-box h4{
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.system-status{
+    margin-top:auto;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    color:#4ade80;
+    font-size:13px;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#4ade80;
+
+    box-shadow:0 0 12px #4ade80;
+}
+
+/* =====================================
+   MAIN
+===================================== */
+
+.queue-main{
+    flex:1;
+    padding:30px;
+}
+
+.page-header h1{
+    color:white;
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.page-header p{
+    color:#94a3b8;
+}
+
+/* =====================================
+   STATS
+===================================== */
+
+.queue-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+
+    margin-top:25px;
+}
+
+.card{
+    background:rgba(13,18,35,.45);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    backdrop-filter:blur(15px);
+}
+
+.card h3{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.card p{
+    margin-top:8px;
+
+    color:white;
+
+    font-size:28px;
+    font-weight:800;
+}
+
+.emergency-card{
+    border-color:rgba(239,68,68,.25);
+}
+
+.senior-card{
+    border-color:rgba(234,179,8,.25);
+}
+
+/* =====================================
+   NOW SERVING
+===================================== */
+
+.current-serving-card{
+    margin-top:25px;
+
+    background:rgba(13,18,35,.45);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:24px;
+}
+
+.current-serving-card h2{
+    color:white;
+    margin-bottom:15px;
+}
+
+.serving-box{
+    text-align:center;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    background:rgba(6,11,23,.45);
+
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.serving-box h1{
+    color:#22d3ee;
+    font-size:52px;
+}
+
+.serving-box h3{
+    color:white;
+    margin-top:10px;
+}
+
+/* =====================================
+   TABLE
+===================================== */
+
+.queue-table-card{
+    margin-top:25px;
+
+    background:rgba(13,18,35,.45);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:24px;
+}
+
+.queue-table-card h2{
+    color:white;
+    margin-bottom:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    padding:14px;
+}
+
+td{
+    padding:16px 14px;
+
+    color:white;
+
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* =====================================
+   PILLS
+===================================== */
+
+.category-pill{
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+    font-weight:600;
+}
+
+.category-pill.emergency{
+    background:rgba(239,68,68,.15);
+    color:#f87171;
+}
+
+.category-pill.senior-citizen{
+    background:rgba(234,179,8,.15);
+    color:#facc15;
+}
+
+.category-pill.regular{
+    background:rgba(59,130,246,.15);
+    color:#60a5fa;
+}
+
+.status-pill{
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:rgba(34,211,238,.15);
+    color:#22d3ee;
+
+    font-size:12px;
+}
