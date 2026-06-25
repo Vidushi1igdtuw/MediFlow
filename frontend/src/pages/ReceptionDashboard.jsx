@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import "./ReceptionDashboard.css";
-import { patients } from "../data/patientsData";
+import { usePatients } from "../context/PatientContext";
 
 export default function ReceptionDashboard() {
+
+  const { patients } = usePatients();
   const navigate = useNavigate();
 
   const totalPatients = patients.length;

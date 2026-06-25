@@ -1,70 +1,41 @@
 import { useNavigate } from "react-router-dom";
 import "./QueueManagement.css";
+import { usePatients } from "../context/PatientContext";
 
 export default function QueueManagement() {
+
   const navigate = useNavigate();
 
-  const patients = [
-    {
-      token: 108,
-      name: "Rahul Sharma",
-      age: 45,
-      phone: "9876543210",
-      category: "Emergency",
-      status: "Waiting",
-      priority: 1,
-    },
-    {
-      token: 110,
-      name: "Priya Verma",
-      age: 68,
-      phone: "9876543211",
-      category: "Senior Citizen",
-      status: "Waiting",
-      priority: 2,
-    },
-    {
-      token: 101,
-      name: "Amit Kumar",
-      age: 32,
-      phone: "9876543212",
-      category: "Regular",
-      status: "Waiting",
-      priority: 3,
-    },
-    {
-      token: 103,
-      name: "Neha Singh",
-      age: 28,
-      phone: "9876543213",
-      category: "Regular",
-      status: "Waiting",
-      priority: 3,
-    },
-    {
-      token: 111,
-      name: "Suresh Gupta",
-      age: 72,
-      phone: "9876543214",
-      category: "Senior Citizen",
-      status: "Waiting",
-      priority: 2,
-    },
-  ];
+  const { patients } = usePatients();
 
-  const sortedQueue = [...patients].sort(
-    (a, b) => a.priority - b.priority
-  );
+  const sortedQueue = [...patients].sort((a, b) => {
 
-  const currentlyServing = sortedQueue[0];
+    const priorityOrder = {
+      emergency: 1,
+      senior: 2,
+      normal: 3
+    };
 
-  const emergencyCount = patients.filter(
-    (p) => p.category === "Emergency"
-  ).length;
+    return (
+      (priorityOrder[a.priority] || 3) -
+      (priorityOrder[b.priority] || 3)
+    );
+  });
 
-  const seniorCount = patients.filter(
-    (p) => p.category === "Senior Citizen"
-  ).length;
+  const currentlyServing =
+    sortedQueue.length > 0
+      ? sortedQueue[0]
+      : null;
+
+  const emergencyCount =
+    patients.filter(
+      (p) => p.priority === "emergency"
+    ).length;
+
+  const seniorCount =
+    patients.filter(
+      (p) => p.priority === "senior"
+    ).length;
 
   return (
     <div className="queue-container">
@@ -86,6 +57,7 @@ export default function QueueManagement() {
         </div>
 
         <div className="rd-right">
+
           <span className="rd-time">
             {new Date().toLocaleTimeString()}
           </span>
@@ -97,6 +69,7 @@ export default function QueueManagement() {
           <button className="rd-logout">
             Logout
           </button>
+
         </div>
 
       </div>
@@ -134,6 +107,7 @@ export default function QueueManagement() {
           <button>Notifications</button>
 
           <div className="sidebar-box">
+
             <h4>⚡ Quick Actions</h4>
 
             <button>
@@ -151,6 +125,7 @@ export default function QueueManagement() {
             <button>
               Refresh Queue
             </button>
+
           </div>
 
           <div className="system-status">
@@ -164,15 +139,15 @@ export default function QueueManagement() {
 
         <div className="queue-main">
 
-          {/* HEADER */}
-
           <div className="page-header">
+
             <h1>Queue Management</h1>
 
             <p>
               Emergency patients are automatically
               prioritized, followed by senior citizens.
             </p>
+
           </div>
 
           {/* STATS */}
@@ -201,31 +176,37 @@ export default function QueueManagement() {
 
           </div>
 
-          {/* CURRENTLY SERVING */}
+          {/* NOW SERVING */}
 
           <div className="current-serving-card">
 
             <h2>Now Serving</h2>
 
-            <div className="serving-box">
+            {currentlyServing ? (
 
-              <h1>
-                Token {currentlyServing.token}
-              </h1>
+              <div className="serving-box">
 
-              <h3>
-                {currentlyServing.name}
-              </h3>
+                <h1>
+                  Token {currentlyServing.token}
+                </h1>
 
-              <span
-                className={`category-pill ${currentlyServing.category
-                  .toLowerCase()
-                  .replace(" ", "-")}`}
-              >
-                {currentlyServing.category}
-              </span>
+                <h3>
+                  {currentlyServing.name}
+                </h3>
 
-            </div>
+                <span className="category-pill">
+                  {currentlyServing.priority}
+                </span>
+
+              </div>
+
+            ) : (
+
+              <div className="serving-box">
+                <h2>No Patients In Queue</h2>
+              </div>
+
+            )}
 
           </div>
 
@@ -252,6 +233,7 @@ export default function QueueManagement() {
 
                 {sortedQueue.map(
                   (patient, index) => (
+
                     <tr key={patient.token}>
 
                       <td>
@@ -272,12 +254,14 @@ export default function QueueManagement() {
 
                       <td>
 
-                        <span
-                          className={`category-pill ${patient.category
-                            .toLowerCase()
-                            .replace(" ", "-")}`}
-                        >
-                          {patient.category}
+                        <span className="category-pill">
+
+                          {patient.priority === "emergency"
+                            ? "Emergency"
+                            : patient.priority === "senior"
+                            ? "Senior Citizen"
+                            : "Regular"}
+
                         </span>
 
                       </td>
@@ -291,6 +275,7 @@ export default function QueueManagement() {
                       </td>
 
                     </tr>
+
                   )
                 )}
 
