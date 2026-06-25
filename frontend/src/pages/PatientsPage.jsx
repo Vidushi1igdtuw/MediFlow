@@ -19,13 +19,10 @@ export default function PatientsPage() {
     priority: "normal"
   });
 
+  // ================= ADD PATIENT (GLOBAL SAFE FIX) =================
   const addPatient = () => {
 
-    if (
-      !formData.name ||
-      !formData.age ||
-      !formData.phone
-    ) {
+    if (!formData.name || !formData.age || !formData.phone) {
       alert("Please fill all fields");
       return;
     }
@@ -45,8 +42,10 @@ export default function PatientsPage() {
       status: "waiting"
     };
 
-    setPatients([...patients, newPatient]);
+    // ✅ IMPORTANT: functional update for real-time sync
+    setPatients((prev) => [...prev, newPatient]);
 
+    // reset form
     setFormData({
       name: "",
       age: "",
@@ -58,30 +57,27 @@ export default function PatientsPage() {
     setShowModal(false);
   };
 
-  const sortedPatients = [...patients].sort((a, b) => {
+  // ================= PRIORITY SORT =================
+  const priorityOrder = {
+    emergency: 1,
+    senior: 2,
+    normal: 3
+  };
 
-    const priorityOrder = {
-      emergency: 1,
-      senior: 2,
-      normal: 3
-    };
-
-    return (
+  const sortedPatients = [...patients].sort(
+    (a, b) =>
       (priorityOrder[a.priority] || 3) -
       (priorityOrder[b.priority] || 3)
-    );
-  });
+  );
 
   return (
     <div className="patients-container">
 
-      {/* NAVBAR */}
-
+      {/* ================= NAVBAR ================= */}
       <div className="patients-navbar">
 
         <div className="patients-logo-section">
           <div className="patients-logo-icon">✚</div>
-
           <h2>
             Medi<span>Flow</span>
           </h2>
@@ -92,7 +88,6 @@ export default function PatientsPage() {
         </div>
 
         <div className="patients-right">
-
           <span className="patients-time">
             {new Date().toLocaleTimeString()}
           </span>
@@ -104,24 +99,17 @@ export default function PatientsPage() {
           <button className="patients-logout">
             Logout
           </button>
-
         </div>
 
       </div>
 
-      {/* BODY */}
-
+      {/* ================= BODY ================= */}
       <div className="patients-layout">
 
-        {/* SIDEBAR */}
-
+        {/* ================= SIDEBAR ================= */}
         <div className="patients-sidebar">
 
-          <button
-            onClick={() =>
-              navigate("/receptionist/dashboard")
-            }
-          >
+          <button onClick={() => navigate("/receptionist/dashboard")}>
             Dashboard
           </button>
 
@@ -129,11 +117,7 @@ export default function PatientsPage() {
             Patients
           </button>
 
-          <button
-            onClick={() =>
-              navigate("/receptionist/queue")
-            }
-          >
+          <button onClick={() => navigate("/receptionist/queue")}>
             Queue Management
           </button>
 
@@ -145,11 +129,7 @@ export default function PatientsPage() {
 
             <h4>⚡ Quick Actions</h4>
 
-            <button
-              onClick={() =>
-                setShowModal(true)
-              }
-            >
+            <button onClick={() => setShowModal(true)}>
               Add New Patient
             </button>
 
@@ -166,23 +146,15 @@ export default function PatientsPage() {
 
         </div>
 
-        {/* MAIN */}
-
+        {/* ================= MAIN ================= */}
         <div className="patients-main">
 
           <div className="patients-header">
-
             <h1>Patients Management</h1>
-
-            <p>
-              View and manage all registered
-              patients
-            </p>
-
+            <p>View and manage all registered patients</p>
           </div>
 
           {/* SEARCH */}
-
           <div className="patients-search-row">
 
             <input
@@ -192,9 +164,7 @@ export default function PatientsPage() {
 
             <button
               className="patients-add-btn"
-              onClick={() =>
-                setShowModal(true)
-              }
+              onClick={() => setShowModal(true)}
             >
               + Add Patient
             </button>
@@ -202,7 +172,6 @@ export default function PatientsPage() {
           </div>
 
           {/* TABLE */}
-
           <div className="patients-table-card">
 
             <table>
@@ -222,7 +191,6 @@ export default function PatientsPage() {
               <tbody>
 
                 {sortedPatients.map((patient) => (
-
                   <tr key={patient.token}>
 
                     <td>{patient.token}</td>
@@ -230,10 +198,7 @@ export default function PatientsPage() {
                     <td>{patient.age}</td>
                     <td>{patient.gender}</td>
                     <td>{patient.phone}</td>
-
-                    <td>
-                      {patient.priority}
-                    </td>
+                    <td>{patient.priority}</td>
 
                     <td>
                       <span className="patients-status-pill">
@@ -242,7 +207,6 @@ export default function PatientsPage() {
                     </td>
 
                   </tr>
-
                 ))}
 
               </tbody>
@@ -255,8 +219,7 @@ export default function PatientsPage() {
 
       </div>
 
-      {/* MODAL */}
-
+      {/* ================= MODAL ================= */}
       {showModal && (
 
         <div className="patients-modal-overlay">
@@ -270,10 +233,7 @@ export default function PatientsPage() {
               placeholder="Patient Name"
               value={formData.name}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  name: e.target.value,
-                })
+                setFormData({ ...formData, name: e.target.value })
               }
             />
 
@@ -282,10 +242,7 @@ export default function PatientsPage() {
               placeholder="Age"
               value={formData.age}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  age: e.target.value,
-                })
+                setFormData({ ...formData, age: e.target.value })
               }
             />
 
@@ -294,20 +251,14 @@ export default function PatientsPage() {
               placeholder="Phone Number"
               value={formData.phone}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  phone: e.target.value,
-                })
+                setFormData({ ...formData, phone: e.target.value })
               }
             />
 
             <select
               value={formData.gender}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  gender: e.target.value,
-                })
+                setFormData({ ...formData, gender: e.target.value })
               }
             >
               <option>Male</option>
@@ -318,32 +269,17 @@ export default function PatientsPage() {
             <select
               value={formData.priority}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  priority: e.target.value,
-                })
+                setFormData({ ...formData, priority: e.target.value })
               }
             >
-              <option value="normal">
-                Normal Patient
-              </option>
-
-              <option value="senior">
-                Senior Citizen
-              </option>
-
-              <option value="emergency">
-                Emergency
-              </option>
+              <option value="normal">Normal Patient</option>
+              <option value="senior">Senior Citizen</option>
+              <option value="emergency">Emergency</option>
             </select>
 
             <div className="patients-modal-buttons">
 
-              <button
-                onClick={() =>
-                  setShowModal(false)
-                }
-              >
+              <button onClick={() => setShowModal(false)}>
                 Cancel
               </button>
 

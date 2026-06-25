@@ -6,8 +6,12 @@ export default function QueueManagement() {
 
   const navigate = useNavigate();
 
-  const { patients } = usePatients();
+  const {
+    patients,
+    callNextPatient
+  } = usePatients();
 
+  // ================= PRIORITY SORT =================
   const sortedQueue = [...patients].sort((a, b) => {
 
     const priorityOrder = {
@@ -22,26 +26,25 @@ export default function QueueManagement() {
     );
   });
 
-  const currentlyServing =
-    sortedQueue.length > 0
-      ? sortedQueue[0]
-      : null;
+  // ================= CURRENTLY SERVING (FIXED) =================
+  const currentlyServing = patients.find(
+    p => p.status === "serving"
+  );
 
+  // ================= COUNTS =================
   const emergencyCount =
-    patients.filter(
-      (p) => p.priority === "emergency"
-    ).length;
+    patients.filter(p => p.priority === "emergency").length;
 
   const seniorCount =
-    patients.filter(
-      (p) => p.priority === "senior"
-    ).length;
+    patients.filter(p => p.priority === "senior").length;
+
+  const waitingCount =
+    patients.filter(p => p.status === "waiting").length;
 
   return (
     <div className="queue-container">
 
-      {/* NAVBAR */}
-
+      {/* ================= NAVBAR ================= */}
       <div className="rd-navbar">
 
         <div className="logo-section">
@@ -74,27 +77,17 @@ export default function QueueManagement() {
 
       </div>
 
-      {/* BODY */}
-
+      {/* ================= BODY ================= */}
       <div className="queue-body">
 
-        {/* SIDEBAR */}
-
+        {/* ================= SIDEBAR ================= */}
         <div className="rd-sidebar">
 
-          <button
-            onClick={() =>
-              navigate("/receptionist/dashboard")
-            }
-          >
+          <button onClick={() => navigate("/receptionist/dashboard")}>
             Dashboard
           </button>
 
-          <button
-            onClick={() =>
-              navigate("/receptionist/patients")
-            }
-          >
+          <button onClick={() => navigate("/receptionist/patients")}>
             Patients
           </button>
 
@@ -106,11 +99,12 @@ export default function QueueManagement() {
           <button>Analytics</button>
           <button>Notifications</button>
 
+          {/* QUICK ACTIONS */}
           <div className="sidebar-box">
 
             <h4>⚡ Quick Actions</h4>
 
-            <button>
+            <button onClick={callNextPatient}>
               Call Next Patient
             </button>
 
@@ -135,28 +129,27 @@ export default function QueueManagement() {
 
         </div>
 
-        {/* MAIN */}
-
+        {/* ================= MAIN ================= */}
         <div className="queue-main">
 
+          {/* HEADER */}
           <div className="page-header">
 
             <h1>Queue Management</h1>
 
             <p>
-              Emergency patients are automatically
-              prioritized, followed by senior citizens.
+              Emergency patients are automatically prioritized,
+              followed by senior citizens.
             </p>
 
           </div>
 
           {/* STATS */}
-
           <div className="queue-stats">
 
             <div className="card">
               <h3>Total Waiting</h3>
-              <p>{patients.length}</p>
+              <p>{waitingCount}</p>
             </div>
 
             <div className="card emergency-card">
@@ -170,20 +163,18 @@ export default function QueueManagement() {
             </div>
 
             <div className="card">
-              <h3>Avg Wait Time</h3>
-              <p>18 min</p>
+              <h3>Total Patients</h3>
+              <p>{patients.length}</p>
             </div>
 
           </div>
 
           {/* NOW SERVING */}
-
           <div className="current-serving-card">
 
             <h2>Now Serving</h2>
 
             {currentlyServing ? (
-
               <div className="serving-box">
 
                 <h1>
@@ -195,23 +186,23 @@ export default function QueueManagement() {
                 </h3>
 
                 <span className="category-pill">
-                  {currentlyServing.priority}
+                  {currentlyServing.priority === "emergency"
+                    ? "Emergency"
+                    : currentlyServing.priority === "senior"
+                      ? "Senior Citizen"
+                      : "Regular"}
                 </span>
 
               </div>
-
             ) : (
-
               <div className="serving-box">
                 <h2>No Patients In Queue</h2>
               </div>
-
             )}
 
           </div>
 
           {/* QUEUE TABLE */}
-
           <div className="queue-table-card">
 
             <h2>Live Priority Queue</h2>
@@ -220,7 +211,7 @@ export default function QueueManagement() {
 
               <thead>
                 <tr>
-                  <th>Priority</th>
+                  <th>#</th>
                   <th>Token</th>
                   <th>Name</th>
                   <th>Age</th>
@@ -231,53 +222,34 @@ export default function QueueManagement() {
 
               <tbody>
 
-                {sortedQueue.map(
-                  (patient, index) => (
+                {sortedQueue.map((patient, index) => (
 
-                    <tr key={patient.token}>
+                  <tr key={patient.token}>
 
-                      <td>
-                        #{index + 1}
-                      </td>
+                    <td>{index + 1}</td>
+                    <td>{patient.token}</td>
+                    <td>{patient.name}</td>
+                    <td>{patient.age}</td>
 
-                      <td>
-                        {patient.token}
-                      </td>
-
-                      <td>
-                        {patient.name}
-                      </td>
-
-                      <td>
-                        {patient.age}
-                      </td>
-
-                      <td>
-
-                        <span className="category-pill">
-
-                          {patient.priority === "emergency"
-                            ? "Emergency"
-                            : patient.priority === "senior"
+                    <td>
+                      <span className="category-pill">
+                        {patient.priority === "emergency"
+                          ? "Emergency"
+                          : patient.priority === "senior"
                             ? "Senior Citizen"
                             : "Regular"}
+                      </span>
+                    </td>
 
-                        </span>
+                    <td>
+                      <span className="status-pill">
+                        {patient.status}
+                      </span>
+                    </td>
 
-                      </td>
+                  </tr>
 
-                      <td>
-
-                        <span className="status-pill">
-                          {patient.status}
-                        </span>
-
-                      </td>
-
-                    </tr>
-
-                  )
-                )}
+                ))}
 
               </tbody>
 

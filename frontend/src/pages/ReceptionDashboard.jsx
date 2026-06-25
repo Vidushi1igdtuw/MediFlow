@@ -4,19 +4,34 @@ import { usePatients } from "../context/PatientContext";
 
 export default function ReceptionDashboard() {
 
-  const { patients } = usePatients();
+  const {
+    patients,
+    callNextPatient
+  } = usePatients();
+
   const navigate = useNavigate();
+
+  // ================= LIVE DERIVED STATE =================
 
   const totalPatients = patients.length;
 
-  const activeQueue =
-    patients.filter((p) => p.status === "waiting").length;
+  const activeQueue = patients.filter(
+    (p) => p.status === "waiting"
+  ).length;
 
-  const serving =
-    patients.find((p) => p.status === "serving");
+  const serving = patients.find(
+    (p) => p.status === "serving"
+  );
 
-  const completed = 12; // temporary
-  const avgWaitTime = 18;
+  const completed = patients.filter(
+    (p) => p.status === "completed"
+  ).length;
+
+  // fake but realistic for hackathon demo
+  const avgWaitTime =
+    activeQueue === 0 ? 0 : activeQueue * 6;
+
+  const tokensGenerated = patients.length;
 
   return (
     <div className="rd-container">
@@ -26,7 +41,6 @@ export default function ReceptionDashboard() {
 
         <div className="logo-section">
           <div className="logo-icon">✚</div>
-
           <h2>
             Medi<span>Flow</span>
           </h2>
@@ -58,17 +72,22 @@ export default function ReceptionDashboard() {
         {/* ================= SIDEBAR ================= */}
         <div className="rd-sidebar">
 
-          <button>Dashboard</button>
-          <button
-  onClick={() => navigate("/receptionist/patients")}
->
-  Patients
-</button>
-          <button
-  onClick={() => navigate("/receptionist/queue")}
->
-  Queue Management
-</button>
+          <button className="active">
+            Dashboard
+          </button>
+
+          <button onClick={() =>
+            navigate("/receptionist/patients")
+          }>
+            Patients
+          </button>
+
+          <button onClick={() =>
+            navigate("/receptionist/queue")
+          }>
+            Queue Management
+          </button>
+
           <button>Appointments</button>
           <button>Analytics</button>
           <button>Notifications</button>
@@ -77,8 +96,18 @@ export default function ReceptionDashboard() {
           <div className="sidebar-box">
             <h4>⚡ Quick Actions</h4>
 
-            <button>Call Next</button>
-            <button>Add New Patient</button>
+            <button onClick={callNextPatient}>
+              Call Next Patient
+            </button>
+
+            <button
+              onClick={() =>
+                navigate("/receptionist/patients")
+              }
+            >
+              Add New Patient
+            </button>
+
             <button>Print Token</button>
             <button>Generate QR</button>
           </div>
@@ -109,7 +138,7 @@ export default function ReceptionDashboard() {
 
             <div className="card">
               <h3>Tokens Generated</h3>
-              <p>{patients.length + 100}</p>
+              <p>{tokensGenerated}</p>
             </div>
 
             <div className="card">
@@ -124,7 +153,11 @@ export default function ReceptionDashboard() {
 
             <div className="card highlight">
               <h3>Currently Serving</h3>
-              <p>{serving?.name || "None"}</p>
+              <p>
+                {serving
+                  ? `${serving.token} - ${serving.name}`
+                  : "None"}
+              </p>
             </div>
 
           </div>
@@ -145,12 +178,15 @@ export default function ReceptionDashboard() {
               <p>
                 {serving
                   ? `${serving.name} - General Consultation`
-                  : "Waiting..."}
+                  : "Waiting for patients..."}
               </p>
 
             </div>
 
-            <button className="next-btn">
+            <button
+              className="next-btn"
+              onClick={callNextPatient}
+            >
               Call Next Patient
             </button>
 

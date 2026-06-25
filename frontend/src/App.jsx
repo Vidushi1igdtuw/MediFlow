@@ -24,42 +24,37 @@ const Unauthorized = () => (
 function App() {
   return (
     <PatientProvider>
-
       <BrowserRouter>
-
         <Routes>
 
-          {/* Landing */}
-          <Route
-            path="/"
-            element={<Landing />}
-          />
+          {/* ================= LANDING ================= */}
+          <Route path="/" element={<Landing />} />
 
-          {/* Receptionist Login */}
+          {/* ================= AUTH ================= */}
           <Route
             path="/receptionist-login"
             element={<ReceptionistAuth />}
           />
 
-          {/* Reception Dashboard */}
+          {/* ================= RECEPTION DASHBOARD ================= */}
           <Route
             path="/receptionist/dashboard"
             element={<ReceptionDashboard />}
           />
 
-          {/* Patients Page */}
+          {/* ================= PATIENTS PAGE ================= */}
           <Route
             path="/receptionist/patients"
             element={<PatientsPage />}
           />
 
-          {/* Queue Management */}
+          {/* ================= QUEUE MANAGEMENT ================= */}
           <Route
             path="/receptionist/queue"
             element={<QueueManagement />}
           />
 
-          {/* Future Pages */}
+          {/* ================= FUTURE ROUTES ================= */}
           <Route
             path="/doctor/dashboard"
             element={<DoctorDashboard />}
@@ -70,13 +65,13 @@ function App() {
             element={<PatientPage />}
           />
 
-          {/* Unauthorized */}
+          {/* ================= ERROR PAGES ================= */}
           <Route
             path="/unauthorized"
             element={<Unauthorized />}
           />
 
-          {/* 404 */}
+          {/* ================= 404 ================= */}
           <Route
             path="*"
             element={
@@ -98,9 +93,7 @@ function App() {
           />
 
         </Routes>
-
       </BrowserRouter>
-
     </PatientProvider>
   );
 }
